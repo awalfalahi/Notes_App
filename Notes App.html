@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Notes App</title>
+
+    <style>
+        #app {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        #note-input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+        
+        .note {
+            background: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+        
+        .note .toolbar {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .note button {
+            background: none;
+            border: none;
+            color: blue;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+
+        <h1>Notes App</h1>
+
+        <textarea id="note-input" placeholder="Enter note"></textarea>
+
+        <button id="add-note">Add Note</button>
+
+        <div id="notes"></div>
+
+    </div>
+
+    <script>
+        // Get references to DOM elements
+        const noteInput = document.getElementById('note-input');
+        const addNoteBtn = document.getElementById('add-note');
+        const notesList = document.getElementById('notes');
+
+        // Array to store notes  
+        let notes = [];
+
+        // Add note
+        addNoteBtn.addEventListener('click', () => {
+            let noteText = noteInput.value;
+            notes.push(noteText);
+            noteInput.value = '';
+            renderNotes();
+        });
+
+        // Render notes
+        function renderNotes() {
+            let html = '';
+            notes.forEach(note => {
+                html += `
+      <li>
+        <p>${note}</p>
+        <button onclick="editNote(this)">Edit</button>
+        <button onclick="deleteNote(this)">Delete</button>
+      </li>
+    `;
+            });
+
+            notesList.innerHTML = html;
+        }
+
+        // Delete note
+        function deleteNote(noteElement) {
+            let noteText = noteElement.previousElementSibling.innerText;
+            let noteIndex = notes.indexOf(noteText);
+            notes.splice(noteIndex, 1);
+            renderNotes();
+        }
+
+        // Edit note
+        function editNote(noteElement) {
+            let noteText = prompt('Edit note:', noteElement.previousElementSibling.innerText);
+            let noteIndex = notes.indexOf(noteElement.previousElementSibling.innerText);
+            notes[noteIndex] = noteText;
+            renderNotes();
+        }
+    </script>
+
+</body>
+
+</html>
